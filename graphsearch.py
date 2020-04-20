@@ -7,10 +7,10 @@ class GraphSearch:
 	# Part d - Recursive DFS traversal that returns the nodes visited in a list from start to end
 	def DFSRec(self, start, end):
 
-		# Pull the adjacenty matrix from the graph class
-		adjMatrix = self.graph.getAllNodes()
+		
+		adjMatrix = self.graph.getAdjMatrix()
 	
-		# Add the start node to the visitedNode list
+		
 		self.visitedNodes.append(start)
 
 		# Go through each neighboring node for the start node
