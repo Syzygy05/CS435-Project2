@@ -8,12 +8,12 @@ g = graph.Graph()
 
 def createRandomUnweightedGraphIter(n):
 	
-	adjMatrix = g.getAllNodes()
+	adjMatrix = g.getAdjMatrix()
 	
 	for i in range(n):
 		while True:
 			# Pick a random number that will be added as a node
-			randNum = random.randint(0, 1000)
+			randNum = random.randint(0, n * 10)
 
 			# If the number is in the adjaceny matrix, then pick another number (restart loop)
 			# Else add the node to the graph, append the node to the local list of nodes in the 
@@ -54,8 +54,7 @@ def createLinkedList(n):
 
 
 # TESTING CODE
-#createRandomUnweightedGraphIter(5)
-#x = g.getAllNodes()
+createRandomUnweightedGraphIter(2)
 
-
-#print(x)
+x = g.getAdjMatrix()
+print(x)
