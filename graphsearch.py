@@ -27,7 +27,36 @@ class GraphSearch:
 				return self.DFSRec(node, end)
 
 	def DFSIter(self, start, end):
-		pass
+		
+		# Pull the adjacenty matrix from the graph class
+		adjMatrix = self.graph.getAllNodes()
+		print(adjMatrix)
+	
+		# Add the start node to the visitedNode list
+		self.visitedNodes.append(start)
+
+		# Stack will add a node when it comes across it
+		stack = []
+
+		# Add the start node to stack
+		stack.append(start)
+
+		# Go through each neighboring node while the stack is not empty or the node has not been found, 
+		# stop when node found or you have popped everything from stack
+		while (len(stack) != 0):
+
+			# Pop the node that was added last
+			currNode = stack.pop()
+
+			
+
+
+
+
+
+		for node in adjMatrix[start]:
+			print(node)
+			break
 
 	def BFTRec(self, start, end):
 		pass
