@@ -4,7 +4,7 @@ import random
 
 # Create a graph and empty list that holds nodes
 g = graph.Graph()
-nodes = []
+
 
 def createRandomUnweightedGraphIter(n):
 	
@@ -22,13 +22,13 @@ def createRandomUnweightedGraphIter(n):
 				continue
 			else:
 				g.addNode(randNum)
-				nodes.append(randNum)
+				g.nodes.append(randNum)
 				break
 
 	# Add the edges to the nodes randomly. 
-	# Node some nodes will not have edges and some will be cyclical due to the nodes being picked 
+	# Note some nodes will not have edges and some will be cyclical due to the nodes being picked 
 	# randomly
-	for i in range(5):
+	for i in range(n):
 		# Pick 2 random nodes
 		first = random.choice(list(adjMatrix))
 		second = random.choice(list(adjMatrix))
@@ -42,33 +42,20 @@ def createRandomUnweightedGraphIter(n):
 def createLinkedList(n):
 
 	for i in range(n):
-		# Pick a random number that will be added as a node
-		randNum = random.randint(0, 1000)
-
 		# Add node to graph and list of nodes
-		g.addNode(randNum)
-		nodes.append(randNum)
+		g.addNode(i)
+		g.nodes.append(i)
 
 		# Only add an undirected edge if there are more than 1 nodes in the graph
 		if i > 0:
-			g.addUndirectedEdge(nodes[-2], randNum)
+			g.addUndirectedEdge(g.nodes[-2], i)
 
 
 
 
 # TESTING CODE
-#createLinkedList(5)
-
-createRandomUnweightedGraphIter(5)
-
-gs = graphsearch.GraphSearch(g)
-
-print(gs.DFSRec(nodes[0], nodes[2]))
+#createRandomUnweightedGraphIter(5)
+#x = g.getAllNodes()
 
 
-
-
-
-
-
-
+#print(x)
