@@ -1,60 +1,108 @@
+import node
 import graph
 import graphsearch
 import random
 
-# Create a graph and empty list that holds nodes
-g = graph.Graph()
-
 
 def createRandomUnweightedGraphIter(n):
-	
-	adjMatrix = g.getAdjMatrix()
-	
-	for i in range(n):
-		while True:
-			# Pick a random number that will be added as a node
-			randNum = random.randint(0, n * 10)
+    g = graph.Graph()
 
-			# If the number is in the adjaceny matrix, then pick another number (restart loop)
-			# Else add the node to the graph, append the node to the local list of nodes in the 
-			# graph, and exit the loop
-			if randNum in adjMatrix:
-				continue
-			else:
-				g.addNode(randNum)
-				g.nodes.append(randNum)
-				break
+    # Holds the random numbers to ensure double are not entered into graph
+    randomNums = []
 
-	# Add the edges to the nodes randomly. 
-	# Note some nodes will not have edges and some will be cyclical due to the nodes being picked 
-	# randomly
-	for i in range(n):
-		# Pick 2 random nodes
-		first = random.choice(list(adjMatrix))
-		second = random.choice(list(adjMatrix))
+    for i in range(n):
+        while True:    
 
-		# Add an edge as long as the edge does not already exist
-		if second not in adjMatrix[first] and first not in adjMatrix[first]:
-			g.addUndirectedEdge(first, second)
+            val = random.randint(0, n * 10)
 
+            # if the random value is unique, add to randomNum list and add to graph
+            if val not in randomNums:
+                randomNums.append(val)
+                g.addNode(val)
+                break
+            else:
+                continue
+    
+    nodes = g.getAllNodes()
+    
+    for i in range(n):
+        while True:
+            # Get 2 random nodes from the list of nodes in the graph class
+            first = random.choice(tuple(nodes))
+            second = random.choice(tuple(nodes))
 
+            # Add them if they are not the same node
+            if first != second:
+                g.addUndirectedEdge(first, second)
+                break
+            else:
+                continue
+
+    return g
 
 def createLinkedList(n):
+    g = graph.Graph()
 
-	for i in range(n):
-		# Add node to graph and list of nodes
-		g.addNode(i)
-		g.nodes.append(i)
+    for i in range(n):
+        g.addNode(i)
+        if len(g.nodes) > 1:
+            g.addUndirectedEdge(g.nodes[-2], g.nodes[-1])
 
-		# Only add an undirected edge if there are more than 1 nodes in the graph
-		if i > 0:
-			g.addUndirectedEdge(g.nodes[-2], i)
+    return g
+
+def BFTRecLinkedList(g):
+    gs = graphsearch.GraphSearch()
+    path = gs.BFTRec(g)
+    printPath(path)
+
+def BFTIterLinkedList(g):
+    gs = graphsearch.GraphSearch()
+    path = gs.BFTIter(g)
+    printPath(path)
+
+# Prints a list of nodes in a list
+# Used to print the path used to traverse in the recursive and iterative approaches
+def printPath(path):
+    for node in path:
+        print(node.value)
 
 
+# Create a graph with randomness
+#g = createRandomUnweightedGraphIter(5)
+#g.printAllNodesWithNeighbors()
 
+# Create a graph linearly
+#g = createLinkedList(5)
+#g.printAllNodesWithNeighbors()
 
-# TESTING CODE
-createRandomUnweightedGraphIter(2)
+# Get all the nodes in the graph
+#nodes = g.getAllNodesAsList()
 
-x = g.getAdjMatrix()
-print(x)
+# Create a graphSearch object
+gs = graphsearch.GraphSearch()
+
+# DFSRec Traversal
+#path = gs.DFSRec(nodes[1], nodes[-1])
+
+# DFSIter Traversal
+#path = gs.DFSIter(nodes[3], nodes[-1])
+
+# BFTRec Traversal
+#path = gs.BFTRec(g)
+
+# BFTIter Traversal
+#path = gs.BFTIter(g)
+
+# BFTRecLinkedList Traversal
+#linkedList = createLinkedList(100)
+#BFTRecLinkedList(linkedList)
+
+# BFTIterLinkedList Traversal
+linkedList = createLinkedList(1000000)
+BFTIterLinkedList(linkedList)
+
+# This code has been implemented as a function in def printPath above
+# Print the path returned by functions
+#for node in path:
+#    print(node.value)
+

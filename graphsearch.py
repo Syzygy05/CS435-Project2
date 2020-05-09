@@ -1,65 +1,99 @@
+import queue
+
 class GraphSearch:
 
-	def __init__(self, graph):
-		self.graph = graph
-		self.visitedNodes = []
-
-	# Part d - Recursive DFS traversal that returns the nodes visited in a list from start to end
-	def DFSRec(self, start, end):
-
-		
-		adjMatrix = self.graph.getAdjMatrix()
-	
-		
-		self.visitedNodes.append(start)
-
-		# Go through each neighboring node for the start node
-		for node in adjMatrix[start]:
-			# If the neighboring node is equal to the end node, add to visitedList and return list
-			# Else if the node is in the already vistedNode list, goto next neighboring node
-			# Else recursion to next node as start point 
-			if node == end:
-				self.visitedNodes.append(node)
-				return self.visitedNodes
-			elif node in self.visitedNodes:			
-				continue
-			else:
-				return self.DFSRec(node, end)
-
-	def DFSIter(self, start, end):
-		
-		# Pull the adjacenty matrix from the graph class
-		adjMatrix = self.graph.getAllNodes()
-		print(adjMatrix)
-	
-		# Add the start node to the visitedNode list
-		self.visitedNodes.append(start)
-
-		# Stack will add a node when it comes across it
-		stack = []
-
-		# Add the start node to stack
-		stack.append(start)
-
-		# Go through each neighboring node while the stack is not empty or the node has not been found, 
-		# stop when node found or you have popped everything from stack
-		while (len(stack) != 0):
-
-			# Pop the node that was added last
-			currNode = stack.pop()
-
-			
+    def DFSRec(self, start, end):
+        stack = [start]
+        path = []
+        return self.DFSRecHelper(end, stack, path)
 
 
+    def DFSRecHelper(self, end, stack, path):
+        if len(stack) > 0:
+            currentNode = stack.pop()
+            currentNode.visited = True
+            path.append(currentNode)
+            
+            if currentNode == end:
+                return path
+
+            for node in currentNode.neighbors:
+                if node.visited == False:
+                    stack.append(node)  
+                else:
+                    continue
+            
+            return self.DFSRecHelper(end, stack, path)
+        else:
+            return None
+
+
+    def DFSIter(self, start, end):
+        stack = [start]
+        path = []
+
+        while len(stack) > 0:
+            currentNode = stack.pop()
+            currentNode.visited = True
+            path.append(currentNode)
+
+            if currentNode == end:
+                return path
+            
+            for node in currentNode.neighbors:
+                if node.visited == False:
+                    stack.append(node)
+                else:
+                    continue
+            
+        
+        return None
+
+    
+    def BFTRec(self, graph):
+        nodesInGraph = graph.getAllNodesAsList()
+        q = queue.Queue(maxsize = 0) 
+        path = []
+        q.put(nodesInGraph[0])
+        
+        return self.BFTRecHelper(q, path)
+
+    def BFTRecHelper(self, q, path):
+        if q.qsize() > 0:
+            currentNode = q.get()
+            currentNode.visited = True
+            path.append(currentNode)
+
+            for node in currentNode.neighbors:
+                if node.visited == False:
+                    q.put(node)  
+                else:
+                    continue
+
+            return self.BFTRecHelper(q, path)
+        else:
+            return path
 
 
 
-		for node in adjMatrix[start]:
-			print(node)
-			break
+    def BFTIter(self, graph):
+        nodesInGraph = graph.getAllNodesAsList()
+        q = queue.Queue(maxsize = 0) 
+        path = []
+        q.put(nodesInGraph[0])
 
-	def BFTRec(self, start, end):
-		pass
+        while q.qsize() > 0:
+            currentNode = q.get()
+            currentNode.visited = True
+            path.append(currentNode)
 
-	def BFTIter(self, start, end):
-		pass
+            for node in currentNode.neighbors:
+                if node.visited == False:
+                    q.put(node)  
+                else:
+                    continue
+
+        return path
+
+
+

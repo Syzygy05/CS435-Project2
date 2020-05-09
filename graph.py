@@ -1,29 +1,42 @@
+import node
+
 class Graph:
+    def __init__(self):
+        self.nodes = []
 
-	def __init__(self):
-		self.adjMatrix = {}
-		self.nodes = []
+    def addNode(self, n):
+        self.nodes.append(node.Node(n))
 
-	def addNode(self, nodeVal):
-		self.adjMatrix[nodeVal] = []
+    def addUndirectedEdge(self, first, second):
+        if second not in first.neighbors and first not in second.neighbors:
+            first.neighbors.append(second)
+            second.neighbors.append(first)
 
-	def addUndirectedEdge(self, first, second):
-		# If the nodes are equal, then it is a self-loop node and only needs to be added once 
-		# to the adjacency list
-		self.adjMatrix[first].append(second)
-		self.adjMatrix[second].append(first)
+    def removeUndirectedEdge(self, first, second):
+        try:
+            first.neighbors.remove(second)
+            second.neighbors.remove(first)
+        except:
+            print("Unable to remove edges from these nodes. They are not connected!")
+    
+    # Returns all of the nodes as a set as defined in requirements
+    def getAllNodes(self):
+        return set(self.nodes)
 
-	def removeUndirectedEdge(self, first, second):
-		try:
-			self.adjMatrix[first].remove(second)
-			self.adjMatrix[second].remove(first)
-		except:
-			print('Error! Nodes are not connected by an edge.')
+    # Returns all of the nodes as a list for use in by other functions (lists are easier to iterate over)
+    def getAllNodesAsList(self):
+        return self.nodes
 
-	def getAdjMatrix(self):
-		return self.adjMatrix
+    # Print the value of all nodes
+    def printAllNodes(self):
+        for node in self.nodes:
+            print(node.value)
 
-	def getAllNodes(self):
-		return set(self.nodes)
-		
-
+    # Print all nodes with their neighbors in a clean manner
+    def printAllNodesWithNeighbors(self):
+        for node in self.nodes:
+            neighbor = node.neighbors
+            nVal = []
+            for x in neighbor:
+                nVal.append(x.value)
+            print(node.value, ' -> ', nVal)
